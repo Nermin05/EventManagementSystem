@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.category.AddCategoryDto;
 import org.example.eventmanagementsystem.dto.category.CategoryDto;
 import org.example.eventmanagementsystem.dto.category.UpdatedCategoryDto;
+import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getById(@PathVariable Long id) {
+    public ResponseEntity<CategoryDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.ok(categoryService.getById(id));
     }
 
@@ -33,7 +34,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody UpdatedCategoryDto updatedCategoryDto) {
+    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody UpdatedCategoryDto updatedCategoryDto) throws ResourceNotFoundException {
         return ResponseEntity.ok(categoryService.update(id, updatedCategoryDto));
     }
 

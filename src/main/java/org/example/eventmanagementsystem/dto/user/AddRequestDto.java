@@ -1,14 +1,9 @@
 package org.example.eventmanagementsystem.dto.user;
 
-import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
-public class AddRequestDto {
-    private String name;
-    private String surname;
-    private String email;
-    private String username;
-    private String passwordHash;
+import jakarta.validation.constraints.NotBlank;
+
+public record AddRequestDto(@NotBlank String name, @NotBlank String surname,
+                            @NotBlank String email, @NotBlank String username,
+                            @NotBlank String passwordHash) {
 }

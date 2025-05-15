@@ -36,7 +36,6 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final long accessTokenExpiration = 1000 * 60 * 15;
-    private final long refreshExpiration = 1000 * 60 * 60 * 24 * 7;
 
     public ResponseEntity<String> register(RegisterRequestDto registerResponseDto) {
         try {
@@ -108,6 +107,7 @@ public class AuthService {
                 .build();
         tokenService.save(access);
 
+        long refreshExpiration = 1000 * 60 * 60 * 24 * 7;
         Token refresh = Token.builder()
                 .value(refreshToken)
                 .issuedAt(Instant.now())

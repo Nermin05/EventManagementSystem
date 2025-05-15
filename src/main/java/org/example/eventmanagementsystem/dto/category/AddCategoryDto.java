@@ -1,4 +1,6 @@
 package org.example.eventmanagementsystem.dto.category;
 
-public record AddCategoryDto(String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AddCategoryDto(@NotBlank String name) {
 }

@@ -3,6 +3,7 @@ package org.example.eventmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,9 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> {
-            log.error("Can not find username");
-            return new NoSuchElementException("Can not find username");
-        }).customUserDetails();
+        try {
+            return userRepository.findByUsername(username).orElseThrow(() -> {
+                log.error("Can not find username");
+                return new ResourceNotFoundException("Can not find username");
+            }).customUserDetails();
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

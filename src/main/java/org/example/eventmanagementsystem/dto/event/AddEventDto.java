@@ -1,19 +1,13 @@
 package org.example.eventmanagementsystem.dto.event;
 
-import lombok.Builder;
-import lombok.Data;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
-@Builder
-public class AddEventDto {
-    private String name;
-    private String description;
-    private LocalDate date;
-    private Long categoryId;
-    private Long venueId;
-    private Long organizerId;
-    private BigDecimal price;
+public record AddEventDto(@NotBlank String name, @NotBlank String description, @NotNull LocalDate date,
+                          @NotNull Long categoryId, @NotNull Long venueId,
+                          @NotNull Long organizerId, @NotNull BigDecimal price) {
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.eventmanagementsystem.model.enums.EventStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,16 +28,21 @@ public class Event {
     @Column(nullable = false)
     private LocalDate date;
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
     @ManyToOne
-    @JoinColumn(name = "venue_id",nullable = false)
+    @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
     @ManyToOne
-    @JoinColumn(name = "organizer_id",nullable = false)
+    @JoinColumn(name = "organizer_id", nullable = false)
     private Organizer organizer;
     @Column(nullable = false)
-    private BigDecimal price;
+    private BigDecimal minPrice;
+    @Column(nullable = false)
+    private BigDecimal maxPrice;
+    @Enumerated(EnumType.STRING)
+    private EventStatus eventStatus;
     private Instant createdAt;
+    private boolean isPaid;
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.review.AddReviewDto;
 import org.example.eventmanagementsystem.dto.review.ReviewDto;
 import org.example.eventmanagementsystem.dto.review.UpdatedReviewDto;
+import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewDto> getById(@PathVariable Long id) {
+    public ResponseEntity<ReviewDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.ok(reviewService.getById(id));
     }
 
@@ -33,7 +34,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody UpdatedReviewDto updatedReviewDto) {
+    public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody UpdatedReviewDto updatedReviewDto) throws ResourceNotFoundException {
         return ResponseEntity.ok(reviewService.update(id, updatedReviewDto));
     }
 

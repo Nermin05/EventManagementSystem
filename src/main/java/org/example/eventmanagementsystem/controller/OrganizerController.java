@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.organizer.AddOrganizerDto;
 import org.example.eventmanagementsystem.dto.organizer.OrganizerDto;
 import org.example.eventmanagementsystem.dto.organizer.UpdatedOrganizerDto;
+import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.OrganizerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class OrganizerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrganizerDto> getById(@PathVariable Long id) {
+    public ResponseEntity<OrganizerDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.ok(organizerService.getById(id));
     }
 
@@ -33,7 +34,7 @@ public class OrganizerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrganizerDto> update(@PathVariable Long id, @RequestBody UpdatedOrganizerDto updatedOrganizerDto) {
+    public ResponseEntity<OrganizerDto> update(@PathVariable Long id, @RequestBody UpdatedOrganizerDto updatedOrganizerDto) throws ResourceNotFoundException {
         return ResponseEntity.ok(organizerService.update(id, updatedOrganizerDto));
     }
 

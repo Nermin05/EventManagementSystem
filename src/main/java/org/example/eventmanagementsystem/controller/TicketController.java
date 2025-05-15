@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.ticket.AddTicketDto;
 import org.example.eventmanagementsystem.dto.ticket.TicketDto;
 import org.example.eventmanagementsystem.dto.ticket.UpdatedTicketDto;
+import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketDto> getById(@PathVariable Long id) {
+    public ResponseEntity<TicketDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.ok(ticketService.getById(id));
     }
 
@@ -33,7 +34,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketDto> update(@PathVariable Long id, @RequestBody UpdatedTicketDto updatedTicketDto) {
+    public ResponseEntity<TicketDto> update(@PathVariable Long id, @RequestBody UpdatedTicketDto updatedTicketDto) throws ResourceNotFoundException {
         return ResponseEntity.ok(ticketService.update(id, updatedTicketDto));
     }
 

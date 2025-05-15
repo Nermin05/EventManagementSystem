@@ -1,12 +1,7 @@
 package org.example.eventmanagementsystem.dto.bookings;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-@Builder
-public class AddBookingDto {
-    private Long userId;
-    private Long eventId;
-    private Integer numTickets;
+public record AddBookingDto (@NotNull Long userId, @NotNull Long eventId,
+                             @NotNull Integer numTickets) {
 }

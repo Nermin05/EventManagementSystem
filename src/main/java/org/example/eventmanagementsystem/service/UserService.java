@@ -41,11 +41,11 @@ public class UserService {
             log.error("User can not found");
             return new ResourceNotFoundException("User " + id + " can not found");
         });
-        user.setName(updatedRequestDto.getName());
-        user.setSurname(updatedRequestDto.getSurname());
-        user.setUsername(updatedRequestDto.getUsername());
-        user.setPasswordHash(updatedRequestDto.getPasswordHash());
-        user.setEmail(updatedRequestDto.getEmail());
+        user.setName(updatedRequestDto.name());
+        user.setSurname(updatedRequestDto.surname());
+        user.setUsername(updatedRequestDto.username());
+        user.setPasswordHash(updatedRequestDto.passwordHash());
+        user.setEmail(updatedRequestDto.email());
         User updatedUser = userRepository.save(user);
         return userMapper.userToUserDto(updatedUser);
     }
