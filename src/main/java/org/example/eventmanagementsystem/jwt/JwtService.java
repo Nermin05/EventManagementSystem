@@ -5,15 +5,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.example.eventmanagementsystem.model.Authority;
 import org.example.eventmanagementsystem.model.User;
+import org.example.eventmanagementsystem.model.enums.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +29,8 @@ public class JwtService {
     }
 
     public String issueToken(User user) {
-        List<String> list = user.getAuthorities().stream()
-                .map(Authority::getAuthority).toList();
+        List<String> list = user.getRoles().stream()
+                .map(UserRole::getAuthority).toList();
 
         return Jwts.builder()
                 .subject(user.getUsername())
@@ -46,8 +44,8 @@ public class JwtService {
     }
 
     public String generateRefreshToken(User user) {
-        List<String> list = user.getAuthorities().stream()
-                .map(Authority::getAuthority).toList();
+        List<String> list = user.getRoles().stream()
+                .map(UserRole::getAuthority).toList();
 
         return Jwts.builder()
                 .subject(user.getUsername())

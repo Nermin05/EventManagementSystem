@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.eventmanagementsystem.model.enums.UserRole;
 
 import java.time.Instant;
 import java.util.List;
@@ -39,7 +40,9 @@ public class User {
     private String verificationCode;
     private boolean isVerified;
     @OneToMany(mappedBy = "user")
-    private List<Authority> authorities;
+    private List<UserRole> roles;
+    @OneToOne(mappedBy = "user")
+    private Organizer organizer;
 
     public CustomUserDetails customUserDetails() {
         return new CustomUserDetails(this);

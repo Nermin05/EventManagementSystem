@@ -55,7 +55,7 @@ public class BookingService {
         } else {
             bookingStatus = BookingStatus.WAITING_LIST;
         }
-        BigDecimal totalPrice = event.isPaid() ? event.getPrice().multiply(BigDecimal.valueOf(addBookingDto.numTickets()))
+        BigDecimal totalPrice = event.isPaid() ? event.getMinPrice().multiply(BigDecimal.valueOf(addBookingDto.numTickets()))
                 : BigDecimal.ZERO;
         Booking booking = Booking.builder()
                 .event(event)

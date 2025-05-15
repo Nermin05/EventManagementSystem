@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.eventmanagementsystem.dto.event.AddEventDto;
 import org.example.eventmanagementsystem.dto.event.EventDto;
 import org.example.eventmanagementsystem.dto.event.UpdatedEventDto;
+import org.example.eventmanagementsystem.exception.NoActivePricePeriodException;
 import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.mapper.EventMapper;
 import org.example.eventmanagementsystem.model.*;
@@ -16,6 +17,7 @@ import org.example.eventmanagementsystem.repository.VenueRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -92,6 +94,17 @@ public class EventService {
         });
         event.setEventStatus(eventStatus);
         eventRepository.save(event);
+    }
+
+    public BigDecimal getCurrentPrice(Event event, LocalDateTime now) throws NoActivePricePeriodException {
+        return event.getPricePeriods().stream()
+                .filter(p -> !now.isBefore(p.getStartDate()) && !now.isAfter(p.getEndDate()))
+                .map(PricePeriod::getPrice)
+                .findFirst()
+                .orElseThrow(() -> {
+                    log.error("No active price period");
+                    return new NoActivePricePeriodException("No active price period");
+                });
     }
 }
 

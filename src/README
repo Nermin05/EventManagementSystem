@@ -1,0 +1,53 @@
+2. Ticket Management
+✅ Ticket yaratmaq və tədbirlə əlaqələndirmək — hazırdır.
+
+⚠️ Stock/Inventory idarəetməsi — bilet sayı məhdudlaşdırılmalı və tükəndikdə alınmamalıdır.
+
+⚠️ Dynamic Pricing / Early Bird — fərqli qiymət dövrləri (early bird, standard, late) dəstəklənmirsə, əlavə edilməlidir.
+
+3. Booking System
+⚠️ Overlap / Duplicate yoxlaması — eyni istifadəçi eyni tədbir üçün bir neçə dəfə bilet ala bilməməlidir (əgər limit varsa).
+
+⚠️ Ödəniş inteqrasiyası — Stripe, PayPal və ya sadə "mock" ödəniş servisi simulyasiyası lazım ola bilər.
+
+⚠️ QR Kod / Bilet PDF — sifarişdən sonra istifadəçiyə email vasitəsilə biletin göndərilməsi (PDF və ya QR kod).
+
+4. User Roles and Permissions
+✅ Basic user, admin və organizer rolları var.
+
+⚠️ Organizer dashboard — yalnız organizer-ə aid tədbirləri və sifarişləri göstərən panel yoxdur.
+
+⚠️ Admin Panel funksiyası — bütün tədbirləri, istifadəçiləri və satış statistikasını görmək imkanı.
+
+5. Review & Rating System
+⚠️ İstifadəçilər tədbirdən sonra ona rəy və reytinq verə bilməlidir.
+
+⚠️ Bir istifadəçi yalnız iştirak etdiyi tədbiri dəyərləndirə bilməlidir.
+
+6. Search & Filter Functionality
+⚠️ Tədbirləri axtarış (ad, kateqoriya, şəhər, tarix) və filtrə əsasən göstərmək
+
+⚠️ Populyar tədbirləri (ən çox baxılan, ən çox satılan) ön plana çıxarmaq
+
+7. Notification System
+⚠️ Email və ya sistem içi bildirişlər:
+
+Booking təsdiqi
+
+Tədbir dəyişiklikləri
+
+Yeni tədbirlər haqqında xəbərdarlıq
+
+8. Venue Management
+✅ Venue entity mövcuddur.
+
+⚠️ Zal tutumu (capacity) və oturacaq seçimi funksiyası yoxdursa, əlavə edilə bilər.
+
+9. Analytics & Reports
+⚠️ Admin və Organizer üçün aşağıdakı məlumatlar vacibdir:
+
+Günlük / həftəlik bilet satış statistikasını görmək
+
+Tədbir üzrə gəlir
+
+İstifadəçi aktivliyi

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.bookings.AddBookingDto;
 import org.example.eventmanagementsystem.dto.bookings.BookingDto;
 import org.example.eventmanagementsystem.dto.bookings.UpdatedBookingDto;
+import org.example.eventmanagementsystem.exception.LateEventBookingDateTimeException;
 import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.BookingService;
 import org.springframework.http.HttpStatus;
@@ -16,17 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
-
-    @GetMapping
-    public ResponseEntity<List<BookingDto>> getAll() {
-        return ResponseEntity.ok(bookingService.getAll());
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<BookingDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(bookingService.getById(id));
-    }
     @PostMapping
-    public ResponseEntity<BookingDto> add(@RequestBody AddBookingDto addBookingDto) {
+    public ResponseEntity<BookingDto> add(@RequestBody AddBookingDto addBookingDto) throws LateEventBookingDateTimeException {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.add(addBookingDto));
     }
     @PutMapping("/{id}")
@@ -36,11 +28,6 @@ public class BookingController {
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Void> cancel(@PathVariable Long id) {
         bookingService.cancelBooking(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        bookingService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -5,21 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "authorities")
+@Table(name = "price_period")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Authority implements GrantedAuthority {
+@Builder
+public class PricePeriod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String authority;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private BigDecimal price;
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
 }

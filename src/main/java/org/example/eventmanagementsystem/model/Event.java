@@ -10,6 +10,7 @@ import org.example.eventmanagementsystem.model.enums.EventStatus;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -44,5 +45,7 @@ public class Event {
     private EventStatus eventStatus;
     private Instant createdAt;
     private boolean isPaid;
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
+    private List<PricePeriod> pricePeriods;
 
 }

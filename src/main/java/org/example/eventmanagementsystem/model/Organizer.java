@@ -27,4 +27,8 @@ public class Organizer {
     @Column(nullable = false)
     private String address;
     private Instant createdAt;
+
+    @OneToOne
+    @JoinColumn(name = "user_id",nullable = false,unique = true)
+    private User user;
 }

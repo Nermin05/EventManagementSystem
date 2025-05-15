@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.ticket.AddTicketDto;
 import org.example.eventmanagementsystem.dto.ticket.TicketDto;
 import org.example.eventmanagementsystem.dto.ticket.UpdatedTicketDto;
+import org.example.eventmanagementsystem.exception.NotEnoughSpaceException;
 import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.TicketService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class TicketController {
     }
 
     @PostMapping
-    public ResponseEntity<TicketDto> add(@RequestBody AddTicketDto addTicketDto) {
+    public ResponseEntity<TicketDto> add(@RequestBody AddTicketDto addTicketDto) throws NotEnoughSpaceException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.add(addTicketDto));
     }
 

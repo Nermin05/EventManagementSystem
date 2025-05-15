@@ -25,14 +25,22 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(badRequestException.getMessage(), "You need to enter correct one");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(LateEventBookingDateTimeException.class)
     public ResponseEntity<ErrorResponse> handleLateEventBookingDateException(LateEventBookingDateTimeException lateEventBookingDateTimeException) {
         ErrorResponse errorResponse = new ErrorResponse(lateEventBookingDateTimeException.getMessage(), "You cannot book tickets for past events");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(NotEnoughSpaceException.class)
     public ResponseEntity<ErrorResponse> handleNotEnoughSpaceException(NotEnoughSpaceException notEnoughSpaceException) {
         ErrorResponse errorResponse = new ErrorResponse(notEnoughSpaceException.getMessage(), "Event is sold out");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoActivePricePeriodException.class)
+    public ResponseEntity<ErrorResponse> handleNotEnoughSpaceException(NoActivePricePeriodException noActivePricePeriodException) {
+        ErrorResponse errorResponse = new ErrorResponse(noActivePricePeriodException.getMessage(), "No active price period");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

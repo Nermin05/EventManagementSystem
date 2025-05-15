@@ -58,18 +58,4 @@ public class EventController {
     ) {
         return ResponseEntity.ok(eventService.search(name, date, category, location, minPrice, maxPrice));
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/approve/{id}")
-    public ResponseEntity<Void> approveEvent(@PathVariable Long id) throws ResourceNotFoundException {
-        eventService.changeStatus(id, EventStatus.APPROVED);
-        return ResponseEntity.ok().build();
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/reject/{id}")
-    public ResponseEntity<Void> rejectEvent(@PathVariable Long id) throws ResourceNotFoundException {
-        eventService.changeStatus(id, EventStatus.REJECTED);
-        return ResponseEntity.ok().build();
-    }
 }
