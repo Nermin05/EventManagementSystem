@@ -37,13 +37,13 @@ public class AuthService {
     private final TokenService tokenService;
     private final long accessTokenExpiration = 1000 * 60 * 15;
 
-    public ResponseEntity<String> register(RegisterRequestDto registerResponseDto) {
+    public ResponseEntity<String> register(RegisterRequestDto registerRequestDto) {
         try {
-            String name = registerResponseDto.name();
-            String surname = registerResponseDto.surname();
-            String email = registerResponseDto.email();
-            String username = registerResponseDto.username();
-            String password = registerResponseDto.passwordHash();
+            String name = registerRequestDto.name();
+            String surname = registerRequestDto.surname();
+            String email = registerRequestDto.email();
+            String username = registerRequestDto.username();
+            String password = registerRequestDto.passwordHash();
             String verificationCode = VerificationCodeGenerator.generateCode();
             User user = User.builder()
                     .name(name)
@@ -152,5 +152,35 @@ public class AuthService {
                 .build();
         tokenService.save(token);
         return new ResponseEntity<>(new SingInResponseDto(newToken, refreshToken), HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) throws ResourceNotFoundException {
+        String email = forgotPasswordRequestDto.email();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User can not found");
+            return new ResourceNotFoundException("User can not found");
+        });
+
+        String code = VerificationCodeGenerator.generateCode();
+        user.setVerificationCode(code);
+        userRepository.save(user);
+
+        emailService.sendEmail(email, "Verification code is sent:" + code);
+        return ResponseEntity.ok("Your verification code is sent to your email");
+    }
+
+    public ResponseEntity<String> resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) throws WrongVerificationCodeException, ResourceNotFoundException {
+        User user = userRepository.findByEmail(resetPasswordRequestDto.email()).orElseThrow(() -> {
+            log.error("User can not found");
+            return new ResourceNotFoundException("User can not found");
+        });
+        if (!resetPasswordRequestDto.verificationCode().equals(user.getVerificationCode())) {
+            throw new WrongVerificationCodeException("Invalid verification code");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(resetPasswordRequestDto.newPassword()));
+        user.setVerificationCode(null);
+        userRepository.save(user);
+        return ResponseEntity.ok("Reset password successfully");
     }
 }

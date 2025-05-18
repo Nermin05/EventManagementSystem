@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.review.AddReviewDto;
 import org.example.eventmanagementsystem.dto.review.ReviewDto;
 import org.example.eventmanagementsystem.dto.review.UpdatedReviewDto;
+import org.example.eventmanagementsystem.exception.LateEventDateException;
 import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ReviewDto> add(@RequestBody AddReviewDto addReviewDto) {
+    public ResponseEntity<ReviewDto> add(@RequestBody AddReviewDto addReviewDto) throws ResourceNotFoundException, LateEventDateException {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.add(addReviewDto));
     }
 

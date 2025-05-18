@@ -9,6 +9,7 @@ import org.example.eventmanagementsystem.model.enums.UserRole;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -39,10 +40,13 @@ public class User {
     private String issueKey;
     private String verificationCode;
     private boolean isVerified;
-    @OneToMany(mappedBy = "user")
-    private List<UserRole> roles;
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = UserRole.class)
+    private Set<UserRole> roles;
     @OneToOne(mappedBy = "user")
     private Organizer organizer;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PaymentDetails> paymentDetails;
 
     public CustomUserDetails customUserDetails() {
         return new CustomUserDetails(this);

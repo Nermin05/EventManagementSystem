@@ -31,6 +31,11 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(lateEventBookingDateTimeException.getMessage(), "You cannot book tickets for past events");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(LateEventDateException.class)
+    public ResponseEntity<ErrorResponse> handleLateEventDateException(LateEventDateException lateEventDateException) {
+        ErrorResponse errorResponse = new ErrorResponse(lateEventDateException.getMessage(), "The event has ended");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(NotEnoughSpaceException.class)
     public ResponseEntity<ErrorResponse> handleNotEnoughSpaceException(NotEnoughSpaceException notEnoughSpaceException) {

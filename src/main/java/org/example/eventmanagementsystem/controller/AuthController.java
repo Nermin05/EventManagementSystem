@@ -39,4 +39,14 @@ public class AuthController {
     public ResponseEntity<SingInResponseDto> refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         return authService.checkRefreshToken(refreshTokenRequestDto);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) throws ResourceNotFoundException {
+        return authService.forgotPassword(forgotPasswordRequestDto);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestDto resetPasswordRequestDto) throws ResourceNotFoundException, WrongVerificationCodeException {
+        return authService.resetPassword(resetPasswordRequestDto);
+    }
 }
