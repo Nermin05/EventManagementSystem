@@ -37,15 +37,18 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "organizer_id", nullable = false)
     private Organizer organizer;
-    @Column(nullable = false)
-    private BigDecimal minPrice;
-    @Column(nullable = false)
-    private BigDecimal maxPrice;
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
     private Instant createdAt;
     private boolean isPaid;
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<PricePeriod> pricePeriods;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
+    @Column(nullable = false)
+    private int ticketsSold = 0;
+    @Column(nullable = false)
+    private int viewCount = 0;
+
 
 }

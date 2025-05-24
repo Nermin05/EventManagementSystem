@@ -10,6 +10,7 @@ import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.mapper.TicketMapper;
 import org.example.eventmanagementsystem.model.*;
 import org.example.eventmanagementsystem.model.enums.TicketStatus;
+import org.example.eventmanagementsystem.repository.EventRepository;
 import org.example.eventmanagementsystem.repository.TicketRepository;
 import org.example.eventmanagementsystem.repository.VenueRepository;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,8 @@ public class TicketService {
         Venue venue = event.getVenue();
         if (ticket.getStatus() == TicketStatus.VALID) {
             if (venue.getCapacity() <= 0) {
-            throw new NotEnoughSpaceException("Event is sold out");
-        }
+                throw new NotEnoughSpaceException("Event is sold out");
+            }
             venue.setCapacity(venue.getCapacity() - 1);
             venueRepository.save(venue);
         }

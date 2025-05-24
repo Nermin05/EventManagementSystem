@@ -30,15 +30,27 @@ public class EventService {
     private final VenueRepository venueRepository;
     private final OrganizerRepository organizerRepository;
 
-    public List<EventDto> getAll() {
-        return eventMapper.eventsToEventsDto(eventRepository.findByEventStatus(EventStatus.APPROVED));
+    public List<EventDto> getAll() throws NoActivePricePeriodException {
+        List<Event> events = eventRepository.findByEventStatus(EventStatus.APPROVED);
+        List<EventDto> dtoList = eventMapper.eventsToEventsDto(events);
+        for (int i = 0; i < dtoList.size(); i++) {
+            BigDecimal currentPrice = getCurrentPrice(events.get(i), LocalDateTime.now());
+            dtoList.get(i).setCurrentPrice(currentPrice);
+        }
+        return dtoList;
     }
 
-    public EventDto getById(Long id) throws ResourceNotFoundException {
-        return eventMapper.eventToEventDto(eventRepository.findById(id).orElseThrow(() -> {
+    public EventDto getById(Long id) throws ResourceNotFoundException, NoActivePricePeriodException {
+        Event event = eventRepository.findById(id).orElseThrow(() -> {
             log.error("Event can not found");
             return new ResourceNotFoundException("Event can not found");
-        }));
+        });
+        event.setViewCount(event.getViewCount() + 1);
+        eventRepository.save(event);
+        BigDecimal currentPrice = getCurrentPrice(event, LocalDateTime.now());
+        EventDto eventDto = eventMapper.eventToEventDto(event);
+        eventDto.setCurrentPrice(currentPrice);
+        return eventDto;
     }
 
     public EventDto add(AddEventDto addEventDto) {
@@ -71,8 +83,6 @@ public class EventService {
         event.setCategory(category);
         event.setVenue(venue);
         event.setOrganizer(organizer);
-        event.setMinPrice(updatedEventDto.minPrice());
-        event.setMaxPrice(updatedEventDto.maxPrice());
         Event updatedEvent = eventRepository.save(event);
         return eventMapper.eventToEventDto(updatedEvent);
     }
@@ -82,9 +92,14 @@ public class EventService {
     }
 
     public List<EventDto> search(String name, String date, String category, String location,
-                                 BigDecimal minPrice, BigDecimal maxPrice) {
+                                 BigDecimal minPrice, BigDecimal maxPrice) throws NoActivePricePeriodException {
         List<Event> events = eventRepository.search(name, date, category, location, minPrice, maxPrice);
-        return eventMapper.eventsToEventsDto(events);
+        List<EventDto> dtoList = eventMapper.eventsToEventsDto(events);
+        for (int i = 0; i < dtoList.size(); i++) {
+            BigDecimal currentPrice = getCurrentPrice(events.get(i), LocalDateTime.now());
+            dtoList.get(i).setCurrentPrice(currentPrice);
+        }
+        return dtoList;
     }
 
     public void changeStatus(Long id, EventStatus eventStatus) throws ResourceNotFoundException {
@@ -97,7 +112,7 @@ public class EventService {
     }
 
     public BigDecimal getCurrentPrice(Event event, LocalDateTime now) throws NoActivePricePeriodException {
-        return event.getPricePeriods().stream()
+        BigDecimal basePrice = event.getPricePeriods().stream()
                 .filter(p -> !now.isBefore(p.getStartDate()) && !now.isAfter(p.getEndDate()))
                 .map(PricePeriod::getPrice)
                 .findFirst()
@@ -105,6 +120,19 @@ public class EventService {
                     log.error("No active price period");
                     return new NoActivePricePeriodException("No active price period");
                 });
+
+        double viewFactor = 0.0005;
+        double demandFactor = 0.01;
+
+        int ticketsSold = event.getTicketsSold();
+        Integer capacity = event.getVenue().getCapacity();
+        int viewCount = event.getViewCount();
+
+        double soldRatio = capacity > 0 ? (double) ticketsSold / capacity : 0;
+        double viewImpact = viewCount * viewFactor;
+
+        BigDecimal multiply = basePrice.multiply(BigDecimal.valueOf(soldRatio * demandFactor + viewImpact));
+        return basePrice.add(multiply);
     }
 }
 

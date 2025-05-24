@@ -31,6 +31,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(lateEventBookingDateTimeException.getMessage(), "You cannot book tickets for past events");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(LateEventDateException.class)
     public ResponseEntity<ErrorResponse> handleLateEventDateException(LateEventDateException lateEventDateException) {
         ErrorResponse errorResponse = new ErrorResponse(lateEventDateException.getMessage(), "The event has ended");
@@ -46,6 +47,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoActivePricePeriodException.class)
     public ResponseEntity<ErrorResponse> handleNotEnoughSpaceException(NoActivePricePeriodException noActivePricePeriodException) {
         ErrorResponse errorResponse = new ErrorResponse(noActivePricePeriodException.getMessage(), "No active price period");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MismatchCardNumberException.class)
+    public ResponseEntity<ErrorResponse> handleMismatchCardNumberException(MismatchCardNumberException mismatchCardNumberException) {
+        ErrorResponse errorResponse = new ErrorResponse(mismatchCardNumberException.getMessage(), "Mismatch card number");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TicketHaveAlreadySoldException.class)
+    public ResponseEntity<ErrorResponse> handleTicketHaveAlreadySoldException(TicketHaveAlreadySoldException ticketHaveAlreadySoldException) {
+        ErrorResponse errorResponse = new ErrorResponse(ticketHaveAlreadySoldException.getMessage(), "Ticket have already sold");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException insufficientBalanceException) {
+        ErrorResponse errorResponse = new ErrorResponse(insufficientBalanceException.getMessage(), "Insufficient balance");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

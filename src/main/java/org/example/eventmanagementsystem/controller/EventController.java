@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.eventmanagementsystem.dto.event.AddEventDto;
 import org.example.eventmanagementsystem.dto.event.EventDto;
 import org.example.eventmanagementsystem.dto.event.UpdatedEventDto;
+import org.example.eventmanagementsystem.exception.NoActivePricePeriodException;
 import org.example.eventmanagementsystem.exception.ResourceNotFoundException;
 import org.example.eventmanagementsystem.model.enums.EventStatus;
 import org.example.eventmanagementsystem.service.EventService;
@@ -27,7 +28,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventDto> getById(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<EventDto> getById(@PathVariable Long id) throws ResourceNotFoundException, NoActivePricePeriodException {
         return ResponseEntity.ok(eventService.getById(id));
     }
 
@@ -55,7 +56,7 @@ public class EventController {
             @RequestParam(required = false) String location,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice
-    ) {
+    ) throws NoActivePricePeriodException {
         return ResponseEntity.ok(eventService.search(name, date, category, location, minPrice, maxPrice));
     }
 }
